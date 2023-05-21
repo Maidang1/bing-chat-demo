@@ -2,8 +2,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { BingChat, ChatMessage } from 'bing-chat';
 
-const defaultCookie =
-  '1tOY2mjMgnHntA29jKMbkxmrU3aVdh7TD4eyCew5YSzwGe0lDyDaI3wfWwSl_cQX6mRHOBIDTDltFUw3w-WXAP1kpUn6cJQeXPC3GEV-CdILnTqDcRNqUDBCsQ45tG0sr_1jQ-HyhR_3NsE1yxNx8ECNOUqmooQPVxoPr9kPpLjzIn54eiTfbQujD9Fz76P4io4Nwc8KidglmQio0J3DmXg';
+const cookie =
+  "1eF359oTx_yIxcOHYse7_xNy7iuz29H6GXBrtiCCpigOz8OK3oJeqT95xGUabwQ7DVT9trVks4TbgZJClE36mkvE1R-l-Xxw8KFElvEyUdl8PIklOfF-_RpqjHY125OwYxKLb9I8lpka4_BmphH7-U46UsLgpBAu8zL5xM-JtWRHXdEDcocIUY3F28xyCB0obkebXnygCuN-veLOa05pJFQ"
 
 let apiInsance: BingChat = '' as unknown as BingChat;
 
@@ -15,14 +15,15 @@ export default async function handler(
 
   if (!apiInsance) {
     apiInsance = new BingChat({
-      cookie: defaultCookie,
+      cookie,
     })
   }
 
   try {
-    const response = await apiInsance.sendMessage("helo world");
+    console.log(req.body)
+    const message = JSON.parse(req.body || {})
+    const response = await apiInsance.sendMessage(message.info);
     res.status(200).json(response)
-
   } catch (e: any) {
     res.status(500).send(e.message)
   }
